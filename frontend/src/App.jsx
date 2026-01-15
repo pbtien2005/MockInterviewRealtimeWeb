@@ -31,7 +31,7 @@ import { RingingScreen } from "./videoCall/RingingScreen";
 import { VideoCallWindow } from "./videoCall/VideoCallWindow";
 import { config } from "./config";
 
-import { MultiCallProvider } from "./videoCall/GroupCallContext";
+import { MultiCallProvider } from "./videoCall/context";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useMultiCall } from "./GroupCallContext";
+import { useMeshCall } from "./MeshCallContext";
 
 // =======================
 // 1. Ô video cho từng participant
@@ -88,11 +88,7 @@ function VideoTile({
 // =======================
 // 2. MultiVideoCall
 // =======================
-export default function MultiVideoCall({
-  room,
-  participants,
-  onLeave = () => {},
-}) {
+export default function MeshCallUI({ room, participants, onLeave = () => {} }) {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -106,7 +102,7 @@ export default function MultiVideoCall({
     isMicOn,
     toggleMic,
     toggleVideo,
-  } = useMultiCall();
+  } = useMeshCall();
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;

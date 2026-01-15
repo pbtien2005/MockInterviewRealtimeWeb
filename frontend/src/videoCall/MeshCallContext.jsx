@@ -23,17 +23,17 @@ import {
 } from "./groupPeerConnection.js";
 import { registerUI } from "../ws/dispatcher.js";
 import { apiFetch } from "../api/api.js";
-import MultiVideoCall from "./MultiVideoCall.jsx";
+import MultiVideoCall from "./MeshCallUI.jsx";
 
-const MultiCallContext = createContext();
+const MeshCallContext = createContext();
 
-export const useMultiCall = () => {
-  const ctx = useContext(MultiCallContext);
-  if (!ctx) throw new Error("useMultiCall must be inside MultiCallProvider");
+export const useMeshCall = () => {
+  const ctx = useContext(MeshCallContext);
+  if (!ctx) throw new Error("useMeshCall must be inside MeshCallProvider");
   return ctx;
 };
 
-export const MultiCallProvider = ({ children }) => {
+export const MeshCallProvider = ({ children }) => {
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [connectionState, setConnectionState] = useState("idle");
@@ -562,8 +562,8 @@ export const MultiCallProvider = ({ children }) => {
     ]
   );
   return (
-    <MultiCallContext.Provider value={value}>
+    <MeshCallContext.Provider value={value}>
       {children}
-    </MultiCallContext.Provider>
+    </MeshCallContext.Provider>
   );
 };

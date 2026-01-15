@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Video, Users, Plus, LogIn, List, ArrowLeft } from "lucide-react";
-import { apiFetch } from "../api/api";
-import MultiVideoCall from "../videoCall/MultiVideoCall";
-import { useMultiCall } from "../videoCall/GroupCallContext";
-
+import VideoCallContainer from "../videoCall/MultiCallContainer";
+import { useMultiCall } from "../videoCall/context";
 export default function MeetingRoom() {
   const [activeTab, setActiveTab] = useState("home");
   const [roomName, setRoomName] = useState("");
@@ -42,13 +40,7 @@ export default function MeetingRoom() {
     setActiveTab("home");
   };
   if (connectionState == "in-call") {
-    return (
-      <MultiVideoCall
-        room={room}
-        onLeave={handleLeaveCall}
-        participants={participants}
-      />
-    );
+    return <VideoCallContainer onLeave={leaveRoom} />;
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-600 flex flex-col items-center justify-center p-4 sm:p-8">
