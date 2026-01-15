@@ -68,10 +68,10 @@ export function createPeer() {
     onRemoteTrackHandler(remoteStream);
   };
   pc.onconnectionstatechange = (event) => {
-    console.log("làldsfasd");
     const state = pc.connectionState;
     console.log("[Peer] connectionState:", pc.connectionState);
   };
+  return pc;
 }
 export function setIceHandler(fn) {
   onIceCandidateHandler = fn;

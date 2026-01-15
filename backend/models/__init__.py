@@ -8,3 +8,5 @@ from .open_slots import OpenSlot
 from .booking_requests import BookingRequest
 from .booking_request_items import BookingRequestItem
 from .session import Session
+from .meeting_participants import MeetingParticipant
+from .meeting_rooms import MeetingRoom

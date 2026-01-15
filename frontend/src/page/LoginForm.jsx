@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationBar } from "../components/Navigation/NavigationBar";
+import { config } from "../config";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export function LoginForm() {
     data.append("email", formData.email);
     data.append("password", formData.password);
     try {
-      const res = await fetch("http://172.20.10.4:8000/auth/login", {
+      const res = await fetch(`${config.apiUrl}/auth/login`, {
         method: "POST",
         body: data,
         credentials: "include",

@@ -98,6 +98,15 @@ class User(Base):
         back_populates="target",
         foreign_keys="MessageRequest.target_id"
     )
+    hosted_meeting_rooms: Mapped[List["MeetingRoom"]] = relationship(
+        back_populates="host"
+    )
+
+    meeting_participations: Mapped[List["MeetingParticipant"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
 
     def __repr__(self) -> str:
         return f"<User id={self.user_id} email={self.email} role={self.role}>"

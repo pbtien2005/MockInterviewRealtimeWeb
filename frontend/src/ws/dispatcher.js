@@ -6,6 +6,7 @@ import {
 } from "../videoCall/peerConnection.js";
 import { tryParseJSON } from "./utils.js";
 import { apiFetch } from "../api/api.js";
+import { config } from "../config.js";
 let ui = {
   addMessage: () => {},
   userStatusUpdate: () => {},
@@ -15,6 +16,12 @@ let ui = {
   handleCallOffer: () => {},
   endCall: () => {},
   pendingCallRef: "",
+  handleRoomParticipants: () => {},
+  handleRoomUserJoined: () => {},
+  handleRoomAnswer: () => {},
+  handleRoomIceCandidate: () => {},
+  handleRoomOffer: () => {},
+  handleRoomUserLeft: () => {},
 };
 
 export function registerUI(api) {
@@ -25,7 +32,24 @@ export function registerUI(api) {
 export async function handleIncoming(rawString) {
   let obj;
   obj = tryParseJSON(rawString);
-
+  if (obj.type == "error.token") {
+    const refreshRes = await fetch(`${config.apiUrl}/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+    });
+    if (!refreshRes.ok) {
+      localStorage.removeItem("access_token");
+      return;
+    }
+    const data = await refreshRes.json();
+    console.log(data);
+    localStorage.setItem("access_token", data.access_token);
+    response = await fetch(`${config.apiUrl}` + url, {
+      ...options,
+      Authorization: `Bearer ${data.access_token}`, // ✅
+      "Content-Type": "application/json",
+    });
+  }
   // 🧩 4. Nếu là message chat thường
   if (obj.type == "user.online") {
     ui.userStatusUpdate(obj.sender_id, true);
@@ -91,5 +115,25 @@ export async function handleIncoming(rawString) {
   if (obj.type == "call.cancel") {
     console.log("🚫 Call cancelled by caller");
     ui.setIncomingCall(null);
+  }
+  if (obj.type == "room.participants") {
+    ui.handleRoomParticipants(obj);
+  }
+  if (obj.type == "room.user_joined") {
+    ui.handleRoomUserJoined(obj);
+  }
+  if (obj.type === "room.offer") {
+    ui.handleRoomOffer(obj);
+  }
+
+  if (obj.type === "room.answer") {
+    ui.handleRoomAnswer(obj);
+  }
+  if (obj.type === "room.leave") {
+    console.log("đã chạy hàm leave");
+    ui.handleRoomUserLeft(obj);
+  }
+  if (obj.type === "room.ice") {
+    ui.handleRoomIceCandidate(obj);
   }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { config } from "../config";
 export default function CoachList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ export default function CoachList() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch("http://172.20.10.4:8000/students/list_coachers");
+      const res = await fetch(`${config.apiUrl}/students/list_coachers`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }

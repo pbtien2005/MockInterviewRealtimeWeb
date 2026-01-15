@@ -22,14 +22,18 @@ import StudentListPage from "./components/admin/StudentListPage";
 import CoacherListPage from "./components/admin/CoacherListPage";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 
+import MeetingRooom from "./page/MeetingRoom";
+
 import WebSocketProvider from "./ws/WebSocketProvider";
 import { VideoCallProvider } from "./videoCall/VideoCallContext";
-import { ws } from "./ws/socket";
 import { IncomingCallPopup } from "./videoCall/IncomingCallPopup";
 import { RingingScreen } from "./videoCall/RingingScreen";
 import { VideoCallWindow } from "./videoCall/VideoCallWindow";
+import { config } from "./config";
+
+import { MultiCallProvider } from "./videoCall/GroupCallContext";
+
 function App() {
-  const wsUrl = `ws://172.20.10.4:8000/ws`;
   return (
     <BrowserRouter>
       <Routes>
@@ -37,25 +41,30 @@ function App() {
           element={
             <ProtectedRoute>
               <VideoCallProvider>
-                <WebSocketProvider wsUrl={wsUrl}>
-                  <AppLayout />
-                  <IncomingCallPopup />
-                  <RingingScreen />
-                  <VideoCallWindow />
+                <WebSocketProvider wsUrl={config.wsUrl}>
+                  {/* 👇 Bọc toàn bộ layout + route con bằng MultiCallProvider */}
+                  <MultiCallProvider>
+                    <AppLayout />
+                    <IncomingCallPopup />
+                    <RingingScreen />
+                    <VideoCallWindow />
+                  </MultiCallProvider>
                 </WebSocketProvider>
               </VideoCallProvider>
             </ProtectedRoute>
           }
         >
-          {/* ✅ THÊM TRANG CHỦ MỚI VÀO ĐÂY */}
+          {/* Các route user */}
           <Route path="/coach/home" element={<CoachHome />} />
-
-          {/* (Các route cũ của bạn) */}
           <Route path="/coach/dashboard" element={<CoachDashboard />} />
           <Route
             path="/coach/availability"
             element={<CoachAvailabilityPage />}
           />
+
+          {/* Trang gọi nhóm */}
+          <Route path="/call-room" element={<MeetingRooom />} />
+
           <Route path="/my-schedule" element={<MySchedulePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
           <Route path="/coach/my-slots" element={<MySlotsPage />} />
@@ -65,6 +74,7 @@ function App() {
           <Route path="/coacher/:coachId" element={<CoachDetailPage />} />
         </Route>
 
+        {/* Admin */}
         <Route
           element={
             <AdminProtectedRoute>
@@ -78,10 +88,12 @@ function App() {
           <Route path="/admin/coachers" element={<CoacherListPage />} />
         </Route>
 
+        {/* Auth */}
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
 export default App;

@@ -1,4 +1,6 @@
 // api.js
+
+import { config } from "../config";
 export async function apiFetch(url, options = {}) {
   const token = localStorage.getItem("access_token");
 
@@ -11,19 +13,23 @@ export async function apiFetch(url, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
   try {
-    const response = await fetch("http://172.20.10.4:8000" + url, {
+    const response = await fetch(config.apiUrl + url, {
       ...options,
       headers,
     });
     if (response.status == 401) {
-      const refreshRes = await fetch("http://172.20.10.4:8000/auth/refresh", {
+      const refreshRes = await fetch(`${config.apiUrl}/auth/refresh`, {
         method: "POST",
         credentials: "include",
       });
+      if (!refreshRes.ok) {
+        localStorage.removeItem("access_token");
+        return;
+      }
       const data = await refreshRes.json();
       console.log(data);
       localStorage.setItem("access_token", data.access_token);
-      response = await fetch("http://172.20.10.4:8000" + url, {
+      response = await fetch(`${config.apiUrl}` + url, {
         ...options,
         Authorization: `Bearer ${data.access_token}`, // ✅
         "Content-Type": "application/json",

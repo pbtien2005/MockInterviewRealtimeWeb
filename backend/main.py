@@ -4,7 +4,7 @@ from routers import auth, students, admin
 from fastapi.staticfiles import StaticFiles 
 import os 
 from routers import auth,students,conversation
-from routers import chat, booking, coacher, user, availability , session,slot
+from routers import chat, booking, coacher, user, availability , session,slot,call_meet
 
 from ws.routes import ws_router
 
@@ -42,6 +42,7 @@ app.include_router(ws_router)
 app.include_router(coacher.router)
 app.include_router(user.router)
 app.include_router(session.router)
+app.include_router(call_meet.router)
 
 
 

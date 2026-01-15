@@ -21,6 +21,8 @@ from models.open_slots import OpenSlot
 from models.booking_requests import BookingRequest
 from models.booking_request_items import BookingRequestItem
 from models.session import Session
+from models.meeting_participants import MeetingParticipant
+from models.meeting_rooms import MeetingRoom
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

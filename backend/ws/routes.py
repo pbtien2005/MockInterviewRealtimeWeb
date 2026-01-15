@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI,WebSocket, WebSocketDisconnect,Request,Depends
+from fastapi import APIRouter, FastAPI, HTTPException,WebSocket, WebSocketDisconnect,Request,Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -8,6 +8,7 @@ from ws.connection_manager import ConnectionManager
 from auth.dependencies import get_current_user
 from core.db import get_db
 import time
+from auth.dependencies import rotate_refresh_and_issue_access
 
 ws_router=APIRouter()
 
@@ -20,7 +21,13 @@ async def websocket_endpoint(websocket: WebSocket,db: Session=Depends(get_db)):
     subprotocols = websocket.headers.get("sec-websocket-protocol")
     token = subprotocols.split(",")[0].strip() if subprotocols else None
     await websocket.accept(subprotocol=token)
-    user=get_current_user(token,db)
+    try:
+        user=get_current_user(token,db)
+    except HTTPException as e:
+        await websocket.send_text(json.dumps({"type": "error.token", "data": ""}))
+        await websocket.close()
+        return
+
     client_id=user.user_id
     await wsManager.connect(websocket,str(user.user_id)) #Nhan ket noi tu client 
     try:

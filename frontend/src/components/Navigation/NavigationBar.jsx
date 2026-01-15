@@ -9,6 +9,7 @@ import {
   BellRing,
   ArrowRightLeft,
   LogOut, // ✅ 1. THÊM ICON LOGOUT
+  Presentation,
 } from "lucide-react";
 
 export const NavigationBar = () => {
@@ -26,14 +27,25 @@ export const NavigationBar = () => {
     // ... (Mảng navItems của bạn giữ nguyên)
     { id: "instagram", icon: Instagram, label: "Instagram", path: "/" },
     { id: "home", icon: Home, label: "Home", path: HOME_PATH },
-    { id: "calendar", icon: CalendarRange, label: "Lịch học", path: "/my-schedule" },
+    {
+      id: "calendar",
+      icon: CalendarRange,
+      label: "Lịch học",
+      path: "/my-schedule",
+    },
     { id: "message", icon: MessageCircle, label: "Tin nhắn", path: "/message" },
     {
       id: "notifications",
       icon: ArrowRightLeft,
       label: "Thông báo",
-      
+
       path: REQUEST_PATH,
+    },
+    {
+      id: "meeting_call",
+      icon: Presentation,
+      label: "Gọi nhóm",
+      path: "/call-room",
     },
   ];
 
@@ -43,7 +55,7 @@ export const NavigationBar = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token"); // (Nên xóa cả refresh token nếu có)
-    
+
     // Chuyển hướng về trang Login
     navigate("/login");
   };
@@ -51,7 +63,6 @@ export const NavigationBar = () => {
   return (
     // Container chính
     <div className="fixed inset-y-0 w-20 bg-gradient-to-b from-[#E90000] to-[#FAA6FF] border-r border-[#ff1a1a] flex flex-col items-center py-6 space-y-6 transition-all duration-300 hover:w-21">
-      
       {/* KHỐI 1: MAIN ICONS */}
       <div className="flex flex-col space-y-6 flex-1">
         {navItems.map((item, index) => {
@@ -115,10 +126,9 @@ export const NavigationBar = () => {
         </Link>
       </div>
 
-      
       {/* ✅ KHỐI 4: ĐĂNG XUẤT (NÚT MỚI) */}
       <div className="w-full flex justify-center group-hover:px-4">
-        <button 
+        <button
           onClick={handleLogout}
           className="p-3 text-white/80 hover:text-white hover:bg-white/15 rounded-xl transition-all hover:scale-110"
           title="Đăng xuất"
@@ -126,7 +136,6 @@ export const NavigationBar = () => {
           <LogOut className="w-6 h-6" />
         </button>
       </div>
-      
     </div>
   );
 };
