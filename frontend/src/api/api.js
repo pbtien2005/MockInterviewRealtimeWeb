@@ -13,12 +13,12 @@ export async function apiFetch(url, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
   try {
-    const response = await fetch(config.apiUrl + url, {
+    let response = await fetch(config.apiUrl + url, {
       ...options,
       headers,
     });
     if (response.status == 401) {
-      const refreshRes = await fetch(`${config.apiUrl}/auth/refresh`, {
+      let refreshRes = await fetch(`${config.apiUrl}/auth/refresh`, {
         method: "POST",
         credentials: "include",
       });
@@ -45,7 +45,7 @@ export async function apiFetch(url, options = {}) {
 
       // Tạo error object với thông tin chi tiết
       const error = new Error(
-        errorData.detail || `HTTP Error: ${response.status}`
+        errorData.detail || `HTTP Error: ${response.status}`,
       );
       error.status = response.status;
       error.statusText = response.statusText;
