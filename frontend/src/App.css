@@ -71,3 +71,51 @@
 .read-the-docs {
   color: #888;
 }
+
+
+video {
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Đảm bảo RtkParticipant hiển thị đúng */
+.rtk-participant,
+[class*="rtk-"] {
+  width: 100%;
+  height: 100%;
+}
+
+.rtk-participant video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Loading state */
+.rtk-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

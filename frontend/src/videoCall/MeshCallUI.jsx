@@ -88,7 +88,7 @@ function VideoTile({
 // =======================
 // 2. MultiVideoCall
 // =======================
-export default function MeshCallUI({ room, participants, onLeave = () => {} }) {
+export default function MeshCallUI() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -96,14 +96,19 @@ export default function MeshCallUI({ room, participants, onLeave = () => {} }) {
   const [showParticipants, setShowParticipants] = useState(false);
 
   const {
+    participants,
+    room,
     localStreamRef,
     remoteStreamsRef,
     isVideoOn,
     isMicOn,
     toggleMic,
     toggleVideo,
+    leaveRoom,
   } = useMeshCall();
-
+  const onLeave = () => {
+    leaveRoom();
+  };
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
     setChatMessages((prev) => [

@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Video, Users, Plus, LogIn, List, ArrowLeft } from "lucide-react";
 import VideoCallContainer from "../videoCall/MultiCallContainer";
 import { useMultiCall } from "../videoCall/context";
+import SFUCallUI from "../videoCallBySFU/SFUCallUI";
+import { config } from "../config";
+import MultiCallContainer from "../videoCall/MultiCallContainer";
 export default function MeetingRoom() {
   const [activeTab, setActiveTab] = useState("home");
   const [roomName, setRoomName] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [rooms, setRooms] = useState([]);
 
-  const {
-    room,
-    connectionState,
-    createRoom,
-    joinRoomByCode,
-    leaveRoom,
-    participants,
-  } = useMultiCall();
+  const { connectionState, createRoom, joinRoomByCode, leaveRoom, meeting } =
+    useMultiCall();
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) return;
@@ -23,6 +20,8 @@ export default function MeetingRoom() {
     if (!ok) {
       alert("tạo phòng thất bại, vui lòng thử lại");
       return;
+    } else {
+      console.log("đã tạo được phòng!");
     }
   };
 
@@ -39,8 +38,22 @@ export default function MeetingRoom() {
     await leaveRoom();
     setActiveTab("home");
   };
+  useEffect(() => {
+    console.log(
+      "trong file MeetingRooom, Trạng thái kết nối hiện tại:",
+      connectionState,
+    );
+  }, [connectionState]);
   if (connectionState == "in-call") {
-    return <VideoCallContainer onLeave={leaveRoom} />;
+    if (!meeting && config.CALL_MODE === "SFU") {
+      return (
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
+          <p className="animate-pulse">Đang chuẩn bị thiết bị video...</p>
+        </div>
+      );
+    }
+
+    return <MultiCallContainer />;
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-600 flex flex-col items-center justify-center p-4 sm:p-8">

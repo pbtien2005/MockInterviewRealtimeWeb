@@ -1,26 +1,23 @@
+// src/videoCall/MultiCallContainer.jsx
 import React from "react";
-import { RealtimeKitProvider } from "@cloudflare/realtimekit-react";
-import { Loader2 } from "lucide-react"; // Icon loading (nếu bạn cài lucide-react)
-
-// 1. Import Hook tổng (để lấy cờ providerType và biến meeting)
+import { Loader2 } from "lucide-react";
+import { config } from "../config";
 import { useMultiCall } from "./context";
-
-// 2. Import giao diện cũ (Mesh/Socket.io)
 import MeshCallUI from "./MeshCallUI";
-
-// 3. Import giao diện mới (SFU/Cloudflare) - Bạn cần tạo file này (xem bên dưới)
 import SFUCallUI from "../videoCallBySFU/SFUCallUI";
 
-export default function VideoCallContainer({ onLeave }) {
-  // Lấy dữ liệu từ Context
-  const { providerType, cfMeeting, room } = useMultiCall();
+const CURRENT_MODE = config.CALL_MODE;
 
-  // ---------------------------------------------------------
-  // TRƯỜNG HỢP 1: CLOUDFLARE SFU
-  // ---------------------------------------------------------
-  if (providerType === "SFU") {
-    // Nếu chưa có object meeting (đang connect API) -> Hiện Loading
-    if (!cfMeeting) {
+export default function MultiCallContainer() {
+  const { meeting, connectionState } = useMultiCall();
+
+  console.log(
+    `📞 MultiCallContainer - Mode: ${CURRENT_MODE}, State: ${connectionState}`,
+  );
+
+  if (CURRENT_MODE === "SFU") {
+    // Đợi meeting object từ RealtimeKit SDK
+    if (!meeting) {
       return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
           <Loader2 className="w-12 h-12 animate-spin text-pink-500 mb-4" />
@@ -31,18 +28,19 @@ export default function VideoCallContainer({ onLeave }) {
       );
     }
 
-    // Nếu đã có meeting -> Bọc Provider và render giao diện SFU
+    // Render giao diện SFU
+    return <SFUCallUI />;
+  }
+
+  if (connectionState === "connecting") {
     return (
-      <RealtimeKitProvider value={cfMeeting}>
-        {/* Truyền roomName để hiển thị title */}
-        <SFUCallUI onLeave={onLeave} roomName={room?.name} />
-      </RealtimeKitProvider>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+        <Loader2 className="w-12 h-12 animate-spin text-pink-500 mb-4" />
+        <p className="text-lg font-medium">Đang kết nối...</p>
+      </div>
     );
   }
 
-  // ---------------------------------------------------------
-  // TRƯỜNG HỢP 2: MESH (Code cũ)
-  // ---------------------------------------------------------
-  // MeshCallUI tự dùng useMeshCall bên trong nó, không cần bọc gì thêm
-  return <MeshCallUI onLeave={onLeave} />;
+  // Render giao diện Mesh
+  return <MeshCallUI />;
 }

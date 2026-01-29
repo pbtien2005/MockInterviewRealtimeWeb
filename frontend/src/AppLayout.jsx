@@ -9,11 +9,6 @@ export default function AppLayout() {
       <div className="navigation-bar">
         <NavigationBar />
       </div>
-
-      {/* ✅ SỬA Ở ĐÂY:
-        Thêm 'flex-1' để nó lấp đầy phần còn lại
-        Thêm 'overflow-y-auto' để nó tự cuộn khi nội dung dài
-      */}
       <div className="flex-1 ml-20 h-full bg-neutral-900 overflow-y-auto">
         <Outlet /> {/* Hiển thị nội dung các trang con */}
       </div>

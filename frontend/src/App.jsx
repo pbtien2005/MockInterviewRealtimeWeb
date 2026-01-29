@@ -54,17 +54,13 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* Các route user */}
           <Route path="/coach/home" element={<CoachHome />} />
           <Route path="/coach/dashboard" element={<CoachDashboard />} />
           <Route
             path="/coach/availability"
             element={<CoachAvailabilityPage />}
           />
-
-          {/* Trang gọi nhóm */}
           <Route path="/call-room" element={<MeetingRooom />} />
-
           <Route path="/my-schedule" element={<MySchedulePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
           <Route path="/coach/my-slots" element={<MySlotsPage />} />
@@ -73,8 +69,6 @@ function App() {
           <Route path="/requests/sent" element={<MySentRequestsPage />} />
           <Route path="/coacher/:coachId" element={<CoachDetailPage />} />
         </Route>
-
-        {/* Admin */}
         <Route
           element={
             <AdminProtectedRoute>
