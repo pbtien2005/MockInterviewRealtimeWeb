@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { adminApi } from "../../services/adminApi";
+import { adminApi } from "../../services/adminApi.js";
 import {
   Plus,
   Search,
@@ -42,7 +42,7 @@ export default function CoacherListPage() {
     try {
       setLoading(true);
       const validFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, v]) => v)
+        Object.entries(filters).filter(([_, v]) => v),
       );
       const skip = (page - 1) * LIMIT_PER_PAGE;
       const params = { ...validFilters, skip: skip, limit: LIMIT_PER_PAGE };
@@ -97,7 +97,7 @@ export default function CoacherListPage() {
   const openEditModal = (coacher) => {
     // Lấy data TƯƠI NHẤT (bao gồm certificates) từ state 'coachers'
     const freshCoacherData = coachers.find(
-      (s) => s.user_id === coacher.user_id
+      (s) => s.user_id === coacher.user_id,
     );
     setSelectedCoacher(freshCoacherData || coacher); // Dùng data mới nhất
     setEditModalMode("edit");

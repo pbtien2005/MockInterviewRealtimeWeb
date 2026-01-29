@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { adminApi } from "../../services/adminApi";
+import { adminApi } from "../../services/adminApi.js";
 import {
   Plus,
   Search,
@@ -38,7 +38,7 @@ export default function StudentListPage() {
     try {
       setLoading(true);
       const validFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, v]) => v)
+        Object.entries(filters).filter(([_, v]) => v),
       );
       const skip = (page - 1) * LIMIT_PER_PAGE;
       const params = { ...validFilters, skip: skip, limit: LIMIT_PER_PAGE };
@@ -83,7 +83,7 @@ export default function StudentListPage() {
   const openEditModal = (student) => {
     // SỬA LỖI: Lấy data TƯƠI NHẤT (bao gồm certificates) từ state 'students'
     const freshStudentData = students.find(
-      (s) => s.user_id === student.user_id
+      (s) => s.user_id === student.user_id,
     );
     setSelectedStudent(freshStudentData || student); // Dùng data mới nhất
     setEditModalMode("edit");
