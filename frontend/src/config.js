@@ -1,5 +1,5 @@
 export const config = {
-  apiUrl: "https://bon-marilyn-locks-alive.trycloudflare.com",
-  wsUrl: "wss://bon-marilyn-locks-alive.trycloudflare.com",
+  apiUrl: "https://tan-gray-senator-showcase.trycloudflare.com",
+  wsUrl: "wss://tan-gray-senator-showcase.trycloudflare.com",
   CALL_MODE: "SFU",
 };
