@@ -1,5 +1,3 @@
 name = "mock-interview-realtime-web"
 compatibility_date = "2026-01-29"
 
-# nếu là worker
-main = "src/index.ts"
