@@ -1,5 +1,5 @@
 export const config = {
-  apiUrl: "https://tan-gray-senator-showcase.trycloudflare.com",
-  wsUrl: "wss://tan-gray-senator-showcase.trycloudflare.com",
-  CALL_MODE: "SFU",
+  apiUrl: import.meta.env.VITE_API_URL,
+  wsUrl: import.meta.env.VITE_WS_URL,
+  CALL_MODE: import.meta.env.VITE_CALL_MODE,
 };
